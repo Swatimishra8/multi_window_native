@@ -1,4 +1,4 @@
-## 0.0.1
+## 1.0.0
 
 - Initial release.
 - Added support for creating multiple Flutter windows on macOS.
