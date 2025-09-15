@@ -8,20 +8,29 @@ typedef MethodCallHandler = Future<void> Function(MethodCall call);
 /// An implementation of [MultiWindowNativePlatform] that uses method channels.
 class MethodChannelMultiWindowNative extends MultiWindowNativePlatform {
   /// The method channel used to interact with the native platform.
-   // Get the current window's BinaryMessenger
+  // Get the current window's BinaryMessenger
   static final BinaryMessenger messenger =
-        ServicesBinding.instance.defaultBinaryMessenger;
-  static final methodChannel =  MethodChannel('com.coditas.multi_window_native/pluginChannel', const StandardMethodCodec(),
-      messenger,);
+      ServicesBinding.instance.defaultBinaryMessenger;
+  static final methodChannel = MethodChannel(
+    'com.coditas.multi_window_native/pluginChannel',
+    const StandardMethodCodec(),
+    messenger,
+  );
   static final _listeners = <String, Set<_ListenerWrapper>>{};
 
   static String registerListener(String methodName, MethodCallHandler handler) {
-    final wrapper = _ListenerWrapper(id: UniqueKey().toString(), handler: handler);
-  _listeners.putIfAbsent(methodName, () => {}).add(wrapper);
-  return wrapper.id; // Return the ID for later unregistering
+    final wrapper = _ListenerWrapper(
+      id: UniqueKey().toString(),
+      handler: handler,
+    );
+    _listeners.putIfAbsent(methodName, () => {}).add(wrapper);
+    return wrapper.id; // Return the ID for later unregistering
   }
 
-  static void unregisterListener({required String methodName,required String id}) {
+  static void unregisterListener({
+    required String methodName,
+    required String id,
+  }) {
     _listeners[methodName]?.removeWhere((wrapper) => wrapper.id == id);
   }
 
@@ -47,28 +56,27 @@ class MethodChannelMultiWindowNative extends MultiWindowNativePlatform {
 
   @override
   Future<void> createAndRegisterWindow({
-  required final String routeName,
-  required final String theme,
-  final String? argsJson,
-  final void Function()? onCreation,
+    required final String routeName,
+    required final String theme,
+    final String? argsJson,
+    final void Function()? onCreation,
   }) async {
     // Call native method to create window1
     onCreation?.call();
     print('inside create');
-    await methodChannel.invokeMethod(
-      'createWindow',
-      <String>[
-        routeName,
-        argsJson ?? '{}',
-        theme,
-      ],
-    );
+    await methodChannel.invokeMethod('createWindow', <String>[
+      routeName,
+      argsJson ?? '{}',
+      theme,
+    ]);
   }
 
   @override
-   Future<int> getMessengerCount() async {
+  Future<int> getMessengerCount() async {
     try {
-      final int? count = await methodChannel.invokeMethod<int>('getMessengerCount');
+      final int? count = await methodChannel.invokeMethod<int>(
+        'getMessengerCount',
+      );
       return count ?? 1; // Fallback to 1 in case of error
     } catch (e) {
       return 1;
@@ -76,7 +84,7 @@ class MethodChannelMultiWindowNative extends MultiWindowNativePlatform {
   }
 
   @override
-   Future<void> notifyWindowClose() async {
+  Future<void> notifyWindowClose() async {
     await methodChannel.invokeMethod('closeWindow');
   }
 
@@ -86,12 +94,11 @@ class MethodChannelMultiWindowNative extends MultiWindowNativePlatform {
   }
 
   @override
-   /// Send data to native
+  /// Send data to native
   Future<void> notifyAllWindows(String method, dynamic arguments) async {
     await methodChannel.invokeMethod(method, arguments);
   }
 }
-
 
 class _ListenerWrapper {
   final String id;
