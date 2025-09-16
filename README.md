@@ -31,10 +31,10 @@ flutter pub get
 
 🖼️ Screenshots
 
-![Main window](assets/images/main_window.png)  
+![Main window](https://raw.githubusercontent.com/Swatimishra8/multi_window_native/develop/example/assets/images/main_window.png)
 *Main window with multi-window support*
 
-![Secondary window](assets/images/new_window.png)  
+![Secondary window](https://raw.githubusercontent.com/Swatimishra8/multi_window_native/develop/example/assets/images/new_window.png)
 *Example of a secondary window opened by the plugin*
 
 🛠️ Setup (macOS)
