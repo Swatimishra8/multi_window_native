@@ -31,10 +31,10 @@ flutter pub get
 
 🖼️ Screenshots
 
-![Main window](example/assets/images/main_window.png)  
+![Main window](assets/images/main_window.png)  
 *Main window with multi-window support*
 
-![Secondary window](example/assets/images/new_window.png)  
+![Secondary window](assets/images/new_window.png)  
 *Example of a secondary window opened by the plugin*
 
 🛠️ Setup (macOS)
@@ -55,13 +55,13 @@ Create a new instance and window:
 
 final _multiWindowNative = MultiWindowNative();
 
-Future<void> _openWindow() async {
+<!-- Future<void> _openWindow() async {
   await _multiWindowNative.createWindow([
     'secondScreen', // Route name
     '{}', // Arguments as JSON string
     'light' // Theme mode
   ]);
-}
+} -->
 
 To access window IDs, initialize the window manager early in your app. It offers methods such as windowFocus and windowClose to manage window lifecycle events like focusing and closing windows.
 
