@@ -68,7 +68,7 @@ class _SecondScreenState extends State<SecondScreen> with WindowListener{
       home: Center(
         child: Scaffold(
             appBar: AppBar(
-              title: const Text('Multi Window Native Plugin Example'),
+              title: const Text('Secondary window'),
             ),
             body: Center(
               child: Column(

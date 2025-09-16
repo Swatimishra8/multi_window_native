@@ -7,3 +7,8 @@
 - Added registerListener/unregisterListener APIs for Dart-side communication.
 - Added broadcastToAllWindows native implementation.
 
+
+## 1.0.1
+
+- Formatted and updated README.md with detailed usage instructions and screenshots.
+- Added usage of window manager in the main screen to handle window.

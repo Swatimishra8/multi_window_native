@@ -50,7 +50,8 @@ public class MultiWindowNativePlugin: NSObject, FlutterPlugin,  NSWindowDelegate
             }
             createNewWindow(with: args) { success in result(success) }
         case "closeWindow":
-            if let mainWindow = NSApp.windows.first{
+            print("Inside close of handle")
+            if let mainWindow = NSApp.mainWindow {
                 self.closeWindow(mainWindow)
             }
           result(true)
@@ -84,7 +85,7 @@ public class MultiWindowNativePlugin: NSObject, FlutterPlugin,  NSWindowDelegate
                 }
                 self.createNewWindow(with: args) { success in result(success) }
             case "closeWindow":
-                debugPrint("inside window will close \(controller.view.window!)")
+                print("Inside close of secondary \(controller.view.window!)")
                 self.closeWindow(controller.view.window!)
                 result(true)
             case "getMessengerCount":
@@ -190,8 +191,10 @@ public class MultiWindowNativePlugin: NSObject, FlutterPlugin,  NSWindowDelegate
     }
     
     // Prevent app from terminating after last window closes
-    public func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
-        return false
-    }
+    // public func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+    //     return true
+    // }
+
+
 
 }

@@ -26,8 +26,8 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     if(widget.args.isNotEmpty && widget.args[0] == 'secondScreen'){
-    return const  SecondScreen();
+    return const SecondScreen();
      } 
-    return   const MainScreen(); 
+    return const MainScreen(); 
   }
 }
