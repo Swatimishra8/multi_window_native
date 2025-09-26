@@ -247,30 +247,44 @@ void MultiWindowNativePlugin::RegisterWithRegistrar(flutter::PluginRegistrarWind
       [](const flutter::MethodCall<flutter::EncodableValue>& call,
          std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
         if (call.method_name() == "createWindow") {
-          if (on_create_window_) {
-            const auto* args = std::get_if<std::vector<flutter::EncodableValue>>(call.arguments());
+          if (MultiWindowNativePlugin::on_create_window_) {
+            const auto* args = std::get_if<flutter::EncodableMap>(call.arguments());
+            if (!args) {
+            result->Error("INVALID_ARGS", "Expected map");
+            return;
+            }
             std::vector<std::string> str_args;
             if (args) {
               for (auto& v : *args) {
                 if (auto p = std::get_if<std::string>(&v)) str_args.push_back(*p);
               }
             }
-            on_create_window_(str_args);
+            MultiWindowNativePlugin::on_create_window_(str_args);
           }
           result->Success(flutter::EncodableValue(true));
         } else if (call.method_name() == "closeWindow") {
-          auto args = std::get<flutter::EncodableMap>(*call.arguments());
+          const auto* args = std::get_if<flutter::EncodableMap>(call.arguments());
+            if (!args) {
+            result->Error("INVALID_ARGS", "Expected map");
+            return;
+            }
           bool isMainWindow = std::get<bool>(args[flutter::EncodableValue("isMainWindow")]);
           std::string windowId = std::get<std::string>(args[flutter::EncodableValue("windowId")]);
-          if (on_close_window_) on_close_window_(isMainWindow, windowId);
+          if (MultiWindowNativePlugin::on_close_window_) MultiWindowNativePlugin::on_close_window_(isMainWindow, windowId);
           result->Success(flutter::EncodableValue(true));
         } else if (call.method_name() == "getMessengerCount") {
-          result->Success(flutter::EncodableValue((int)messengers_.size()));
+          result->Success(flutter::EncodableValue(
+                    static_cast<int>(MultiWindowNativePlugin::messengers_.size())));                    
         } else if (call.method_name() == "setWindowId") {
-          auto args = std::get<flutter::EncodableMap>(*call.arguments());
+           const auto* args = std::get_if<flutter::EncodableMap>(call.arguments());
+            if (!args) {
+            result->Error("INVALID_ARGS", "Expected map");
+            return;
+            }
           std::string windowId = std::get<std::string>(args[flutter::EncodableValue("windowId")]);
-          if (_set_window_id_) _set_window_id_(windowId);
-          result->Success(flutter::EncodableValue((int)messengers_.size()));
+          if (MultiWindowNativePlugin::_set_window_id_) MultiWindowNativePlugin::_set_window_id_(windowId);
+          result->Success(flutter::EncodableValue(
+                  static_cast<int>(MultiWindowNativePlugin::messengers_.size())));
         } 
         else {
           // broadcast
@@ -301,6 +315,17 @@ void MultiWindowNativePlugin::SetWindowIdCallback(std::function<void(const std::
   _set_window_id_ = std::move(callback);
 }
 
+void MultiWindowNativePlugin::UnregisterMessenger(flutter::BinaryMessenger* messenger) {
+    messengers_.erase(
+        std::remove(messengers_.begin(), messengers_.end(), messenger),
+        messengers_.end()
+    );
+}
+
+void MultiWindowNativePlugin::ClearMessengers() {
+  messengers_.clear();
+}
+
 void MultiWindowNativePlugin::BroadcastToAll(const std::string& method,
                                              const flutter::EncodableValue& args) {
   for (auto* messenger : messengers_) {
@@ -312,3 +337,6 @@ void MultiWindowNativePlugin::BroadcastToAll(const std::string& method,
 }
 
 MultiWindowNativePlugin::MultiWindowNativePlugin(flutter::PluginRegistrarWindows* registrar) {}
+
+
+

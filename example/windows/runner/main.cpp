@@ -50,7 +50,7 @@
 #include <flutter/flutter_view_controller.h>
 #include <windows.h>
 // Import the generated plugin registrant
-#include "generated_plugin_registrant.h"
+#include "flutter/generated_plugin_registrant.h"
 
 #include "flutter_window.h"
 #include "utils.h"
@@ -64,14 +64,12 @@
 
 // Context to store secondary windows
 struct SecondaryWindowContext {
-  std::string flutterWindowId; 
+  std::string windowId; 
   std::unique_ptr<Win32Window> window;
   std::unique_ptr<flutter::FlutterViewController> controller;
 };
 
 static std::vector<std::unique_ptr<SecondaryWindowContext>> secondary_windows;
-// Forward declare main window pointer
-static Win32Window* main_window = nullptr;
 
 // Function to create new secondary windows
 void CreateNewWindow(const std::vector<std::string>& args) {
@@ -127,12 +125,11 @@ void CloseWindow(bool isMainWindow,const std::string& windowId) {
           }
       }
       secondary_windows.clear();
-      messengers.clear();
+      MultiWindowNativePlugin::ClearMessengers();
       PostQuitMessage(0);  
   } else {
       auto it = std::find_if(secondary_windows.begin(), secondary_windows.end(),
                               [&windowId](const SecondaryWindowContext& ctx) { return ctx.windowId == windowId; });
-
       if (it != secondary_windows.end()) {
           auto& ctx = *it;
           // Shutdown engine and remove messenger
@@ -140,8 +137,7 @@ void CloseWindow(bool isMainWindow,const std::string& windowId) {
           auto messengerPtr = engine->messenger();
           delete engine;
           engine = nullptr;
-          messengers.erase(std::remove(messengers.begin(), messengers.end(), messengerPtr),
-                            messengers.end());
+          MultiWindowNativePlugin::UnregisterMessenger(messengerPtr);
 
           // Destroy native window
           HWND hwnd = GetAncestor(ctx.controller->view()->GetNativeWindow(), GA_ROOT);

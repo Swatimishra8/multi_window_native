@@ -62,9 +62,8 @@ class MethodChannelMultiWindowNative extends MultiWindowNativePlatform {
     final String? argsJson,
     final void Function()? onCreation,
   }) async {
-    // Call native method to create window1
+    // Call native method to create window
     onCreation?.call();
-    print('inside create');
     await methodChannel.invokeMethod('createWindow', <String>[
       routeName,
       argsJson ?? '{}',

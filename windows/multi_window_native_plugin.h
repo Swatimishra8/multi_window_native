@@ -16,6 +16,8 @@ class MultiWindowNativePlugin : public flutter::Plugin {
 
   // Add messenger registration
   static void RegisterMessenger(flutter::BinaryMessenger* messenger);
+  static void UnregisterMessenger(flutter::BinaryMessenger* messenger);
+  static void ClearMessengers();
 
   // Add callbacks for window mgmt
   static void SetCreateWindowCallback(std::function<void(std::vector<std::string>)> callback);
