@@ -18,8 +18,8 @@ class MultiWindowNative {
   //   return MultiWindowNativePlatform.instance.getPlatformVersion();
   // }
 
-  static void init() {
-    MethodChannelMultiWindowNative.init();
+  static void init(int windowId) {
+    MethodChannelMultiWindowNative.init(windowId);
   }
 
   static String registerListener(String methodName, MethodCallHandler handler) {

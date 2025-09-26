@@ -8,7 +8,10 @@ import 'package:window_manager/window_manager.dart';
 Future<void> main(final List<String> args)  async{
   WidgetsFlutterBinding.ensureInitialized();
   await windowManager.ensureInitialized();
-  MultiWindowNative.init();
+  int windowId = await windowManager.getId();
+  // if (windowId > 0) {
+  MultiWindowNative.init(windowId);
+  // }
   runApp(MyApp(args: args,));
 }
 

@@ -34,8 +34,9 @@ class MethodChannelMultiWindowNative extends MultiWindowNativePlatform {
     _listeners[methodName]?.removeWhere((wrapper) => wrapper.id == id);
   }
 
-  static void init() {
+  static void init(int windowId) {
     methodChannel.setMethodCallHandler(handleMethodCall);
+    methodChannel.invokeMethod("setWindowId", {"windowId": windowId.toString()});
   }
 
   static Future<void> handleMethodCall(MethodCall call) async {
