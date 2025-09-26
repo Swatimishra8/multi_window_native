@@ -20,14 +20,18 @@ This package requires the use of window manager to handle multiple windows indiv
 
 🚀 Installation
 
-Add to your pubspec.yaml:
+Add to your `pubspec.yaml`:
 
+```yaml
 dependencies:
 multi_window_native: ^1.0.0
+```
 
 Then run:
 
+```sh
 flutter pub get
+```
 
 🖼️ Screenshots
 
@@ -49,28 +53,36 @@ Keep track of all FlutterBinaryMessenger instances for broadcasting.
 
 Import the package:
 
+```dart
 import 'package:multi_window_native/multi_window_native.dart';
+```
 
 Create a new instance and window:
 
+```dart
 final _multiWindowNative = MultiWindowNative();
 
-<!-- Future<void> _openWindow() async {
+void _openWindow() async {
   await _multiWindowNative.createWindow([
     'secondScreen', // Route name
     '{}', // Arguments as JSON string
     'light' // Theme mode
   ]);
-} -->
+}
+
+```
 
 To access window IDs, initialize the window manager early in your app. It offers methods such as windowFocus and windowClose to manage window lifecycle events like focusing and closing windows.
 
+```dart
 await windowManager.ensureInitialized();
+```
 
 Notify native when UI is ready to be rendered:
 The secondary window screen should call this in init state to notify native.
 NOTE - Its an mandatory step to avoid black screen issues.
 
+```dart
 @override
 void initState() {
   super.initState();
@@ -79,18 +91,22 @@ void initState() {
     await _multiWindowNative.notifyUiRendered();
   });
 }
+```
 
 Communication between windows:
 
 Send updates from Dart to native (and broadcast to all windows):
 
+```dart
 await _multiWindowNative.notifyAllWindows(
   "updateText",
   {"message": "Hello from Main Window"},
 );
+```
 
 Listen for updates in each window:
 
+```dart
 late String _listenerId;
 String _text = "";
 
@@ -110,6 +126,7 @@ void dispose() {
     methodName: "updateText", id: _listenerId);
   super.dispose();
 }
+```
 
 📊 API Reference
 
