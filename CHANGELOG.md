@@ -15,3 +15,6 @@
 
 ## 1.0.2
 - Fixed image links in README.md
+
+## 1.0.3
+- Updated README.md
