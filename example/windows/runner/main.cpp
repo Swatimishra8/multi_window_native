@@ -138,7 +138,8 @@ void CloseWindow(bool isMainWindow,const std::string& windowId) {
           // Shutdown engine and remove messenger
           auto engine = ctx.controller->engine();
           auto messengerPtr = engine->messenger();
-          engine->Shutdown();
+          delete engine;
+          engine = nullptr;
           messengers.erase(std::remove(messengers.begin(), messengers.end(), messengerPtr),
                             messengers.end());
 
