@@ -20,7 +20,6 @@ class _SecondScreenState extends State<SecondScreen> with WindowListener{
   void initState() {
     super.initState();
     windowManager.addListener(this);
-    print("inside init");
      // Register listener and store the returned ID
     _listenerId =  MultiWindowNative.registerListener("updateText", (call) async {
       setState(() {
@@ -61,24 +60,53 @@ class _SecondScreenState extends State<SecondScreen> with WindowListener{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Multi Window Demo',
       themeMode: _themeMode,
       darkTheme: ThemeData.dark(),
       theme: ThemeData.light(),
-      home: Center(
-        child: Scaffold(
-            appBar: AppBar(
-              title: const Text('Secondary window'),
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Secondary Window')),
+        body: Center(
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: _themeMode == ThemeMode.dark ? Colors.grey[900] : Colors.grey[200],
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 12,
+                  offset: Offset(0, 6),
+                ),
+              ],
             ),
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("updated text$_text", style: const TextStyle(fontSize: 24)),
-                ],
-              ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  _text.isEmpty ? "No updates yet" : "{$_text}",
+                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton.icon(
+                  onPressed: () => debugPrint("Button clicked in secondary window"),
+                  icon: const Icon(Icons.refresh),
+                  label: const Text("Refresh"),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
+        ),
       ),
     );
   }

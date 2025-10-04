@@ -44,11 +44,22 @@ public class MultiWindowNativePlugin: NSObject, FlutterPlugin,  NSWindowDelegate
                 result(true)
             }
         case "createWindow":
-            guard let args = call.arguments as? [String] else {
-                result(FlutterError(code: "ARG_ERROR", message: "Expected [String]", details: nil))
+            // guard let args = call.arguments as? [String] else {
+            //     result(FlutterError(code: "ARG_ERROR", message: "Expected [String]", details: nil))
+            //     return
+            // }
+            guard let args = call.arguments as? [String: Any] else {
+                result(FlutterError(code: "ARG_ERROR", message: "Expected dictionary", details: nil))
                 return
             }
-            createNewWindow(with: args) { success in result(success) }
+
+            // Convert dictionary values to list of strings
+            let argsList: [String] = [
+                args["routeName"] as? String ?? "",
+                args["theme"] as? String ?? "",
+                args["argsJson"] as? String ?? ""
+            ]
+            createNewWindow(with: argsList) { success in result(success) }
         case "closeWindow":
             print("Inside close of handle")
             if let mainWindow = NSApp.mainWindow {
@@ -79,11 +90,22 @@ public class MultiWindowNativePlugin: NSObject, FlutterPlugin,  NSWindowDelegate
                 result(true)
                 }
             case "createWindow":
-                guard let args = call.arguments as? [String] else {
-                result(FlutterError(code: "ARG_ERROR", message: "Expected [String]", details: nil))
-                return
+                // guard let args = call.arguments as? [String] else {
+                // result(FlutterError(code: "ARG_ERROR", message: "Expected [String]", details: nil))
+                // return
+                // }
+                guard let args = call.arguments as? [String: Any] else {
+                    result(FlutterError(code: "ARG_ERROR", message: "Expected dictionary", details: nil))
+                    return
                 }
-                self.createNewWindow(with: args) { success in result(success) }
+
+                // Convert dictionary values to list of strings
+                let argsList: [String] = [
+                    args["routeName"] as? String ?? "",
+                    args["theme"] as? String ?? "",
+                    args["argsJson"] as? String ?? ""
+                ]
+                self.createNewWindow(with: argsList) { success in result(success) }
             case "closeWindow":
                 print("Inside close of secondary \(controller.view.window!)")
                 self.closeWindow(controller.view.window!)
