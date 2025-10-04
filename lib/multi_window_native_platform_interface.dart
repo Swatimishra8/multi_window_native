@@ -23,10 +23,6 @@ abstract class MultiWindowNativePlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  // Future<String?> getPlatformVersion() {
-  //   throw UnimplementedError('platformVersion() has not been implemented.');
-  // }
-
   Future<void> createAndRegisterWindow({
     required final String routeName,
     required final String theme,
@@ -34,7 +30,7 @@ abstract class MultiWindowNativePlatform extends PlatformInterface {
     final void Function()? onCreation,
   });
 
-  Future<void> notifyWindowClose();
+  Future<void> notifyWindowClose({required bool isMainWindow, required String windowId});
 
   Future<int> getMessengerCount();
 

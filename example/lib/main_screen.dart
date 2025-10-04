@@ -59,7 +59,7 @@ class _MainScreenState extends State<MainScreen> with WindowListener {
   @override
   Future<void> onWindowClose() async {
     debugPrint("Window to be dleted");
-    await MultiWindowNative.closeWindow();
+    await MultiWindowNative.closeWindow(isMainWindow: true, windowId: (await windowManager.getId()).toString());
   }
 
   Future<void> _toggleTheme() async {

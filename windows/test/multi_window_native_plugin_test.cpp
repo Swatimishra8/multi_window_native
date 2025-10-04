@@ -10,7 +10,6 @@
 
 #include "multi_window_native_plugin.h"
 
-namespace multi_window_native {
 namespace test {
 
 namespace {
@@ -22,22 +21,17 @@ using flutter::MethodResultFunctions;
 
 }  // namespace
 
-TEST(MultiWindowNativePlugin, GetPlatformVersion) {
-  MultiWindowNativePlugin plugin;
-  // Save the reply value from the success callback.
-  std::string result_string;
-  plugin.HandleMethodCall(
-      MethodCall("getPlatformVersion", std::make_unique<EncodableValue>()),
-      std::make_unique<MethodResultFunctions<>>(
-          [&result_string](const EncodableValue* result) {
-            result_string = std::get<std::string>(*result);
-          },
-          nullptr, nullptr));
-
-  // Since the exact string varies by host, just ensure that it's a string
-  // with the expected format.
-  EXPECT_TRUE(result_string.rfind("Windows ", 0) == 0);
+TEST(MultiWindowNativePlugin, GetMessengerCount) {
+  // Test the messenger count functionality
+  int initial_count = static_cast<int>(MultiWindowNativePlugin::GetMessengers().size());
+  
+  // The messenger count should be a non-negative integer
+  EXPECT_GE(initial_count, 0);
+  
+  // Test that we can clear messengers
+  MultiWindowNativePlugin::ClearMessengers();
+  int cleared_count = static_cast<int>(MultiWindowNativePlugin::GetMessengers().size());
+  EXPECT_EQ(cleared_count, 0);
 }
 
 }  // namespace test
-}  // namespace multi_window_native

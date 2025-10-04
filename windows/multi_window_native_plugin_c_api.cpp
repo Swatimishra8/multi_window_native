@@ -4,9 +4,9 @@
 
 #include "multi_window_native_plugin.h"
 
-void MultiWindowNativePluginCApiRegisterWithRegistrar(
+void MultiWindowNativePluginRegisterWithRegistrar(
     FlutterDesktopPluginRegistrarRef registrar) {
-  multi_window_native::MultiWindowNativePlugin::RegisterWithRegistrar(
+  MultiWindowNativePlugin::RegisterWithRegistrar(
       flutter::PluginRegistrarManager::GetInstance()
           ->GetRegistrar<flutter::PluginRegistrarWindows>(registrar));
 }

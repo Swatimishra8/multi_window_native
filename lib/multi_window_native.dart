@@ -48,8 +48,8 @@ class MultiWindowNative {
     );
   }
 
-  static Future<void> closeWindow() {
-    return MultiWindowNativePlatform.instance.notifyWindowClose();
+  static Future<void> closeWindow({required bool isMainWindow, required String windowId}) {
+    return MultiWindowNativePlatform.instance.notifyWindowClose(isMainWindow: isMainWindow, windowId: windowId);
   }
 
   static Future<int> windowCount() {

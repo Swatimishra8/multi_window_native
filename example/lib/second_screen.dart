@@ -55,7 +55,7 @@ class _SecondScreenState extends State<SecondScreen> with WindowListener{
   @override
   Future<void> onWindowClose() async {
     debugPrint("Window to be dleted ${await windowManager.getId()}");
-    await MultiWindowNative.closeWindow();
+    await MultiWindowNative.closeWindow(isMainWindow: false, windowId: (await windowManager.getId()).toString());
   }
 
   @override

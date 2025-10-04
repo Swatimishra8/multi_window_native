@@ -64,11 +64,11 @@ class MethodChannelMultiWindowNative extends MultiWindowNativePlatform {
   }) async {
     // Call native method to create window
     onCreation?.call();
-    await methodChannel.invokeMethod('createWindow', <String>[
-      routeName,
-      argsJson ?? '{}',
-      theme,
-    ]);
+    await methodChannel.invokeMethod('createWindow', <String, dynamic>{
+      "routeName": routeName,
+      "argsJson": argsJson ?? '{}',
+      "theme": theme,
+    });
   }
 
   @override
@@ -84,8 +84,11 @@ class MethodChannelMultiWindowNative extends MultiWindowNativePlatform {
   }
 
   @override
-  Future<void> notifyWindowClose() async {
-    await methodChannel.invokeMethod('closeWindow');
+  Future<void> notifyWindowClose({required bool isMainWindow, required String windowId}) async {
+    await methodChannel.invokeMethod('closeWindow', <String, dynamic>{
+      "isMainWindow": isMainWindow,
+      "windowId": windowId,
+    });
   }
 
   @override
