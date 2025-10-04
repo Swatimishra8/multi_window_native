@@ -69,52 +69,96 @@ class _MainScreenState extends State<MainScreen> with WindowListener {
 
   @override
   Widget build(BuildContext context) {
-      final isDark = _themeMode == ThemeMode.dark;
-
     return MaterialApp(
-       themeMode: _themeMode,
+      themeMode: _themeMode,
+      debugShowCheckedModeBanner: false,
       darkTheme: ThemeData.dark(),
       theme: ThemeData.light(),
       home: Scaffold(
-          appBar: AppBar(
-            title: const Text('Multi Window Native Plugin Example'),
-          ),
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-              Text('MAIN WINDOW'),
-              SizedBox(height: 5),
-              TextField(decoration: InputDecoration(), controller: _controller),
-              SizedBox(height: 5),
-              ElevatedButton(
-                onPressed: () async {
-                  final text = _controller.text;
-                  // Send text to native
-                  await MultiWindowNative.notifyAllWindows("updateText", text);
-                },
-                child: Text('Pass args to new window'),
+        appBar: AppBar(title: const Text('Multi Window Native Plugin Example')),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Center(
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeInOut,
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: _themeMode == ThemeMode.dark ? Colors.grey[900] : Colors.grey[300],
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 12,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
               ),
-              SizedBox(height: 5),
-              ElevatedButton(
-                onPressed: () async {
-                  await MultiWindowNative.createWindow([
-                    'secondScreen',
-                    '{}',
-                    'light'
-                  ]);
-                },
-                child: Text('New window'),
-              ),
-              SizedBox(height: 5),
-              ElevatedButton(
-                  onPressed: _toggleTheme,
-                  child: Text("Switch to ${isDark ? "Light" : "Dark"} Theme"),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        SizedBox(
+                          width: 300,
+                          child: TextField(
+                            controller: _controller,
+                            decoration: InputDecoration(
+                              labelText: 'Enter text',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () async {
+                            final text = _controller.text;
+                            await MultiWindowNative.notifyAllWindows("updateText", text);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: const Text('Pass data to new windows'),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton.icon(
+                      onPressed: createNewWindow,
+                      icon: const Icon(Icons.open_in_new),
+                      label: const Text('Open New Window'),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: _toggleTheme,
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: Text("Switch to ${_themeMode.name == 'light' ? "Dark" : "Light"} Theme"),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
+      ),
     );
   }
 }

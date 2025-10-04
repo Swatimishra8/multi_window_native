@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:multi_window_native/multi_window_native.dart';
 import 'package:multi_window_native_example/main_screen.dart';
@@ -12,9 +10,7 @@ Future<void> main(final List<String> args)  async{
   await windowManager.ensureInitialized();
   await windowManager.waitUntilReadyToShow();
   int windowId = await windowManager.getId();
-  // if (windowId > 0) {
   MultiWindowNative.init(windowId);
-  // }
   runApp(MyApp(args: args,));
 }
 
