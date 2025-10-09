@@ -35,11 +35,23 @@ flutter pub get
 
 🖼️ Screenshots
 
+In Windows - 
 ![Main window](https://raw.githubusercontent.com/Swatimishra8/multi_window_native/develop/example/assets/images/main_window.png)
 *Main window with multi-window support*
 
 ![Secondary window](https://raw.githubusercontent.com/Swatimishra8/multi_window_native/develop/example/assets/images/new_window.png)
 *Example of a secondary window opened by the plugin*
+
+In Macos - 
+
+![Main window](https://raw.githubusercontent.com/Swatimishra8/multi_window_native/develop/example/assets/images/main_window_mac.png)
+*Main window with multi-window support*
+
+![Secondary window](https://raw.githubusercontent.com/Swatimishra8/multi_window_native/develop/example/assets/images/second_window_mac.png)
+*Example of a secondary window opened by the plugin*
+
+Theme changes- 
+![Both windows](https://raw.githubusercontent.com/Swatimishra8/multi_window_native/develop/example/assets/images/theme_change_mac.png)
 
 🛠️ Setup (macOS)
 
