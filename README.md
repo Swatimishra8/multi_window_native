@@ -29,7 +29,7 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-multi_window_native: ^1.0.4
+multi_window_native: ^1.0.5
 ```
 
 Then run:

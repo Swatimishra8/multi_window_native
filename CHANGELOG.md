@@ -19,7 +19,7 @@
 ## 1.0.3
 - Updated README.md
 
-## 1.0.4
+## 1.0.5
 ### Major Improvements
 - **Added Windows Support**: Full native Windows implementation with multi-window support
 - **Window Title Management**: Generate unique window titles automatically with `generateUniqueTitle`, `registerWindowTitle`, and `unregisterWindowTitle` methods
